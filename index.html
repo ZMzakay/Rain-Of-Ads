@@ -12,6 +12,8 @@
             padding: 40px;
             text-align: center;
             overflow-x: hidden;
+            /* Make the body tall enough to scroll so ads can spread everywhere */
+            min-height: 250vh; 
         }
 
         h1 {
@@ -31,90 +33,153 @@
             color: #d9534f;
         }
 
-        /* Fake Ad Styles */
+        /* Real Ad Styled Simulation */
         .fake-ad {
             position: absolute;
-            width: 250px;
-            height: 150px;
-            background: #fff;
-            border: 3px solid #ffcc00;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 300px;
+            height: 250px; /* Standard Medium Rectangle banner size */
+            background: #ffffff;
+            border: 1px solid #dcdcdc;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
             z-index: 1000;
-            padding: 10px;
+            padding: 8px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             text-align: center;
-            border-radius: 5px;
-            animation: popIn 0.3s ease-out;
+            border-radius: 4px;
+            animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             user-select: none;
+            overflow: hidden;
         }
 
         @keyframes popIn {
             0% { transform: scale(0); opacity: 0; }
-            80% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .fake-ad h4 {
-            margin: 0;
-            color: #d9534f;
-            font-size: 16px;
+        /* Fake Google/AdChoices top header to look authentic */
+        .ad-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f3f4;
+            padding: 2px 6px;
+            box-sizing: border-box;
+            font-size: 9px;
+            color: #5f6368;
+            font-family: sans-serif;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .fake-ad p {
-            margin: 5px 0;
-            font-size: 12px;
-            color: #333;
+        .ad-header-left {
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
 
-        .fake-ad button {
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 5px 10px;
+        .ad-badge {
+            background: #f4b400;
+            color: #000;
             font-weight: bold;
-            border-radius: 3px;
-            cursor: pointer;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-size: 8px;
         }
 
-        .fake-ad .close-btn {
-            position: absolute;
-            top: 2px;
-            right: 5px;
+        .close-btn {
             background: none;
             border: none;
-            color: #999;
+            color: #70757a;
             font-size: 14px;
             cursor: pointer;
             padding: 0;
+            line-height: 1;
         }
 
-        .fake-ad .close-btn:hover {
+        .close-btn:hover {
             color: #000;
+        }
+
+        /* Ad Content Area */
+        .ad-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .ad-content h4 {
+            margin: 0 0 8px 0;
+            color: #1a0dab;
+            font-size: 15px;
+            line-height: 1.2;
+            text-decoration: underline;
+        }
+
+        .ad-content p {
+            margin: 0 0 12px 0;
+            font-size: 11px;
+            color: #4d5156;
+            line-height: 1.3;
+        }
+
+        .ad-cta {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .ad-cta:hover {
+            background: #1557b0;
+        }
+
+        .ad-img-placeholder {
+            width: 100%;
+            height: 90px;
+            background: #e8eaed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #70757a;
+            margin-bottom: 8px;
+            border-radius: 2px;
+            border: 1px dashed #bdc1c6;
         }
     </style>
 </head>
 <body>
 
     <h1>Welcome to Our Totally Normal Webpage!</h1>
-    <p>Please browse around. Active popups: <span id="counter">0</span></p>
-    <p><em>(Warning: Clicking the close buttons might just make things worse...)</em></p>
+    <p>Please browse around. Active ads on screen: <span id="counter">0</span></p>
+    <p><em>(Scroll down, scroll up, they are everywhere...)</em></p>
 
     <script>
         let adCount = 0;
         const counterEl = document.getElementById('counter');
 
         const adTemplates = [
-            { title: "🎰 WIN A FREE IPHONE! 🎰", text: "You are the 999,999th visitor! Click here to claim your prize NOW!" },
-            { title: "🚨 VIRUS DETECTED! 🚨", text: "Your computer is running at 94% risk! Download CleanerPro Ultimate Free!" },
-            { title: "🍔 HOT SINGLES NEAR YOU 🍔", text: "Local singles in your area want to chat and share cookies with you!" },
-            { title: "📈 GET RICH FAST! 📈", text: "Make $5,000 a day working from home using this one weird trick!" },
-            { title: "🍪 COOKIE OVERLOAD! 🍪", text: "Accept all cookies to proceed, or suffer eternal popups!" },
-            { title: "⚡ SPEED UP YOUR PC ⚡", text: "Ram Optimizer 2026 is ready to install! Click to speed up." }
+            { brand: "Amazon Ads", title: "Apple iPhone 15 Pro Max - 90% Off Today Only", text: "Liquidated overstock inventory from local fulfillment centers. Claim yours now!", cta: "Claim Deal" },
+            { brand: "Microsoft Security", title: "CRITICAL ALERT: Troj/Agent-Gen Detected", text: "Your Windows Defender is disabled. Run instant system recovery scan.", cta: "Fix Now" },
+            { brand: "LocalMeetups", title: "Single Women in Saint-Jorioz Want to Chat", text: "No credit card required. 100% free registration for verified local profiles.", cta: "Start Chat" },
+            { brand: "CryptoFuture", title: "Elon Musk's New Trading Platform Explodes", text: "Turn $250 into $4,300 in less than 48 hours with automated AI trading bots.", cta: "Invest Fast" },
+            { brand: "CookieMonster Inc.", title: "You Must Accept All Cookies to Proceed", text: "By order of regional internet compliance laws, accept cookies to view content.", cta: "Accept All" },
+            { brand: "SpeedBoost Pro", title: "Your RAM Usage is at 98% Critical Capacity", text: "Click here to flush system memory and accelerate web browser performance.", cta: "Optimize" }
         ];
 
         function spawnAd() {
@@ -124,26 +189,38 @@
             const ad = document.createElement('div');
             ad.className = 'fake-ad';
 
-            // Pick a random ad style
             const template = adTemplates[Math.floor(Math.random() * adTemplates.length)];
 
-            // Random position inside the window view bounds
-            const randomX = Math.random() * (window.innerWidth - 280);
-            const randomY = Math.random() * (window.innerHeight - 180) + window.scrollY;
+            // FIX: Extended boundaries completely across the entire document width and scrollable height
+            // Using document.documentElement.scrollWidth / scrollHeight ensures absolute coverage everywhere.
+            const maxX = Math.max(0, document.documentElement.scrollWidth - 320);
+            const maxY = Math.max(0, document.documentElement.scrollHeight - 270);
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
 
             ad.style.left = `${randomX}px`;
             ad.style.top = `${randomY}px`;
 
             ad.innerHTML = `
-                <button class="close-btn" onclick="multiplyAds(this)">×</button>
-                <h4>${template.title}</h4>
-                <p>${template.text}</p>
-                <button onclick="multiplyAds(this)">CLICK HERE!</button>
+                <div class="ad-header">
+                    <div class="ad-header-left">
+                        <span class="ad-badge">Ad</span>
+                        <span>${template.brand}</span>
+                    </div>
+                    <button class="close-btn" onclick="multiplyAds(event, this)">✕</button>
+                </div>
+                <div class="ad-content">
+                    <div class="ad-img-placeholder">[ Sponsored Display Asset ]</div>
+                    <h4>${template.title}</h4>
+                    <p>${template.text}</p>
+                    <button class="ad-cta" onclick="multiplyAds(event, this)">${template.cta}</button>
+                </div>
             `;
 
-            // Clicking anywhere on the ad also triggers multiplication
+            // Clicking anywhere else on the ad multiplies them
             ad.addEventListener('click', (e) => {
-                if(e.target.tagName !== 'BUTTON') {
+                if(e.target.tagName !== 'BUTTON' && !e.target.classList.contains('close-btn')) {
                     spawnAd();
                     spawnAd();
                 }
@@ -152,40 +229,38 @@
             document.body.appendChild(ad);
         }
 
-        // Clicking the close button doesn't close it—it spawns TWO MORE ads!
-        function multiplyAds(element) {
-            // Stop event bubbling so it doesn't trigger parent clicks twice
+        // Clicking close button or CTA multiplies ads instead of closing them safely
+        function multiplyAds(event, element) {
             event.stopPropagation();
             
-            // Remove the clicked ad element if they somehow hit the tiny X
             const adElement = element.closest('.fake-ad');
             if(adElement) {
                 adElement.remove();
                 adCount = Math.max(0, adCount - 1);
             }
 
-            // Spawn 2 to 3 new ones as punishment for trying to close them
+            // Punishment multiplier: spawns 2 to 4 new ones
             spawnAd();
             spawnAd();
-            if(Math.random() > 0.5) spawnAd();
+            spawnAd();
+            if(Math.random() > 0.4) spawnAd();
         }
 
-        // Automatically spawn ads faster and faster over time
-        let intervalTime = 1000; // Starts at 1 second
+        let intervalTime = 800; // Faster initial drop rate
         
         function startChaos() {
             spawnAd();
             
-            // Speed up slightly every time an ad drops, down to a minimum of 150ms
-            if (intervalTime > 150) {
-                intervalTime -= 25;
+            // Accelerates exponentially down to 80ms interval
+            if (intervalTime > 80) {
+                intervalTime -= 15;
             }
             
             setTimeout(startChaos, intervalTime);
         }
 
-        // Kick off the madness after 1.5 seconds
-        setTimeout(startChaos, 1500);
+        // Trigger chaos quickly after load
+        setTimeout(startChaos, 1000);
     </script>
 
 </body>
