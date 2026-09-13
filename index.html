@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totally Legit Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        #counter {
+            font-weight: bold;
+            color: #d9534f;
+        }
+
+        /* Fake Ad Styles */
+        .fake-ad {
+            position: absolute;
+            width: 250px;
+            height: 150px;
+            background: #fff;
+            border: 3px solid #ffcc00;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            border-radius: 5px;
+            animation: popIn 0.3s ease-out;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .fake-ad h4 {
+            margin: 0;
+            color: #d9534f;
+            font-size: 16px;
+        }
+
+        .fake-ad p {
+            margin: 5px 0;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .fake-ad button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .fake-ad .close-btn {
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .fake-ad .close-btn:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Our Totally Normal Webpage!</h1>
+    <p>Please browse around. Active popups: <span id="counter">0</span></p>
+    <p><em>(Warning: Clicking the close buttons might just make things worse...)</em></p>
+
+    <script>
+        let adCount = 0;
+        const counterEl = document.getElementById('counter');
+
+        const adTemplates = [
+            { title: "🎰 WIN A FREE IPHONE! 🎰", text: "You are the 999,999th visitor! Click here to claim your prize NOW!" },
+            { title: "🚨 VIRUS DETECTED! 🚨", text: "Your computer is running at 94% risk! Download CleanerPro Ultimate Free!" },
+            { title: "🍔 HOT SINGLES NEAR YOU 🍔", text: "Local singles in your area want to chat and share cookies with you!" },
+            { title: "📈 GET RICH FAST! 📈", text: "Make $5,000 a day working from home using this one weird trick!" },
+            { title: "🍪 COOKIE OVERLOAD! 🍪", text: "Accept all cookies to proceed, or suffer eternal popups!" },
+            { title: "⚡ SPEED UP YOUR PC ⚡", text: "Ram Optimizer 2026 is ready to install! Click to speed up." }
+        ];
+
+        function spawnAd() {
+            adCount++;
+            counterEl.textContent = adCount;
+
+            const ad = document.createElement('div');
+            ad.className = 'fake-ad';
+
+            // Pick a random ad style
+            const template = adTemplates[Math.floor(Math.random() * adTemplates.length)];
+
+            // Random position inside the window view bounds
+            const randomX = Math.random() * (window.innerWidth - 280);
+            const randomY = Math.random() * (window.innerHeight - 180) + window.scrollY;
+
+            ad.style.left = `${randomX}px`;
+            ad.style.top = `${randomY}px`;
+
+            ad.innerHTML = `
+                <button class="close-btn" onclick="multiplyAds(this)">×</button>
+                <h4>${template.title}</h4>
+                <p>${template.text}</p>
+                <button onclick="multiplyAds(this)">CLICK HERE!</button>
+            `;
+
+            // Clicking anywhere on the ad also triggers multiplication
+            ad.addEventListener('click', (e) => {
+                if(e.target.tagName !== 'BUTTON') {
+                    spawnAd();
+                    spawnAd();
+                }
+            });
+
+            document.body.appendChild(ad);
+        }
+
+        // Clicking the close button doesn't close it—it spawns TWO MORE ads!
+        function multiplyAds(element) {
+            // Stop event bubbling so it doesn't trigger parent clicks twice
+            event.stopPropagation();
+            
+            // Remove the clicked ad element if they somehow hit the tiny X
+            const adElement = element.closest('.fake-ad');
+            if(adElement) {
+                adElement.remove();
+                adCount = Math.max(0, adCount - 1);
+            }
+
+            // Spawn 2 to 3 new ones as punishment for trying to close them
+            spawnAd();
+            spawnAd();
+            if(Math.random() > 0.5) spawnAd();
+        }
+
+        // Automatically spawn ads faster and faster over time
+        let intervalTime = 1000; // Starts at 1 second
+        
+        function startChaos() {
+            spawnAd();
+            
+            // Speed up slightly every time an ad drops, down to a minimum of 150ms
+            if (intervalTime > 150) {
+                intervalTime -= 25;
+            }
+            
+            setTimeout(startChaos, intervalTime);
+        }
+
+        // Kick off the madness after 1.5 seconds
+        setTimeout(startChaos, 1500);
+    </script>
+
+</body>
+</html>
